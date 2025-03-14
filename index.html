@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSDS Retrieval</title>
+    <link rel="Icon" href="Icon/macdermid.png">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function searchPDF() {
+            let query = document.getElementById("itemCode").value.trim(); // Get user input
+            let pdfPath = "pdfs/" + query + ".pdf"; // Create file path
+            let table = document.getElementById("resultTable"); // Get table element
+            
+            fetch(pdfPath) // Check if the file exists
+                .then(response => {
+                    if (response.ok) {
+                        table.style.display = "table"; // Show table
+                        document.getElementById("tableBody").innerHTML = `
+                            <tr>
+                                <td>${query}.pdf</td>
+                                <td><a href="${pdfPath}" target="_blank">Open File</a></td>
+                            </tr>`;
+                    } else {
+                        table.style.display = "table"; // Show table
+                        document.getElementById("tableBody").innerHTML = `
+                            <tr>
+                                <td colspan="2" style="color: red;">File not found. Please enter a valid Item Code.</td>
+                            </tr>`;
+                    }
+                })
+                .catch(error => {
+                    table.style.display = "table"; // Show table
+                    document.getElementById("tableBody").innerHTML = `
+                        <tr>
+                            <td colspan="2" style="color: red;">Error retrieving file.</td>
+                        </tr>`;
+                });
+        }
+    </script>
+    
+        
+</head>
+<body>
+    <h1>MATERIAL SAFETY DATA SHEET</h1>
+    <hr>
+    <h2>MSDS RETRIEVAL</h2>
+    <p>This site retrieves all MSDS.</p>
+
+    <div class="input-container">
+        <p>Please Enter an Item Number:</p>
+        <input type="text" id="itemCode" placeholder="Enter Item Code">
+        <button onclick="searchPDF()">Submit</button>
+    </div>
+
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</body>
+</html>
